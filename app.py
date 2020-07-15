@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from resources.user import UserRegister, UserLogin
 from resources.posts import Post, PostList
 from resources.likes import Likes
-from resources.analitics import Analitics
+from resources.analitycs import Analitics
 from db import db
 import sqlite3
 
