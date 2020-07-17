@@ -2,9 +2,9 @@ from flask import Flask
 from flask_restful import  Api
 from flask_jwt_extended import JWTManager
 from resources.user import UserRegister, UserLogin
-from resources.posts import Post, PostList
+from resources.posts import Post, PostCheck, PostList
 from resources.likes import Likes
-from resources.analitycs import Analitics
+from resources.analytics import Analitics
 from db import db
 import sqlite3
 
@@ -20,11 +20,12 @@ def create_table():
 
 jwt = JWTManager(app)
 
-api.add_resource(Post, '/<string:name>')
+api.add_resource(Post, '/posts/<string:name>')
+api.add_resource(PostCheck, '/posts/<string:_id>')
 api.add_resource(PostList, '/posts')
 api.add_resource(UserRegister, '/signup')
 api.add_resource(UserLogin, '/login')
-api.add_resource(Likes, '/<string:name>/likes')
+api.add_resource(Likes, '/posts/<string:name>/likes')
 api.add_resource(Analitics, '/api/analitics/')
 
 if __name__ == '__main__':

@@ -11,22 +11,24 @@ def user_activity():    # when user made a last request to service
             user.reqtime = datetime.now()
             user.save_to_db()
 
+class PostCheck(Resource):
+    
+    @jwt_required   # JWT authentication
+    def get (self, _id):   # checking if post exist
+        user_activity()
+
+        item = PostModel.find_by_id(_id)
+        if item:
+            return item.json()
+
+        return {'message': 'Post not found'}, 404 
+
 class Post(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('post',
                         type = str, 
                         required = True, 
                         help = "This area cannot be left blank!")
-
-    @jwt_required   # JWT authentication
-    def get (self, name):   # checking if post exist
-        user_activity()
-
-        item = PostModel.find_by_name(name)
-        if item:
-            return item.json()
-
-        return {'message': 'Post not found'}, 404 
 
     @jwt_required
     def post(self, name):   # post creation

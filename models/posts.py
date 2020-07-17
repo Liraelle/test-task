@@ -13,11 +13,15 @@ class PostModel(db.Model):
         self.post = post
 
     def json(self):
-        return {'name': self.name, 'post': self.post}
+        return {'post_id': self.id, 'name': self.name, 'post': self.post}
 
-    @classmethod
+    @classmethod    # finding post by name
     def find_by_name(cls, name):
         return cls.query.filter_by(name = name).first()
+
+    @classmethod    # finding post by id
+    def find_by_id(cls, _id):
+        return cls.query.filter_by(id = _id).first()
 
     def save_post_to_db(self):   # inserting and updating data to database
         db.session.add(self)
