@@ -1,18 +1,19 @@
-from datetime import timedelta, date
+from datetime import timedelta, datetime
 from flask_restful import Resource, reqparse
 from flask import request
 from db import db
 from models.likes import LikeModel
 from models.posts import PostModel
 
-class Analitics(Resource):
-    def get(self):
-        date_from = request.args['date_from']   # requsting string query arguments
-        date_to = request.args['date_to']   # requsting string query arguments
-        first_date = date_from
+class Analytics(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('date_from', type=lambda x: datetime.strptime(x,'%Y-%m-%d').date())
+    parser.add_argument('date_to', type=lambda x: datetime.strptime(x,'%Y-%m-%d').date())
 
-        date_from = date(*map(int, date_from.split('-')))
-        date_to = date(*map(int, date_to.split('-')))
+    def get(self):
+        data = Analytics.parser.parse_args()
+        date_from = data['date_from']
+        date_to = data['date_to']
 
         all_likes = {}
         posts = {}
@@ -33,7 +34,7 @@ class Analitics(Resource):
                 date_from += delta  # iterating on next day
 
             posts[post.name] = lists    # adding information of likes on each post
-            date_from = date(*map(int, first_date.split('-')))  # back to original start date for next post
+            date_from = data['date_from']  # back to original start date for next post
 
         all_likes['Likes'] = posts
 

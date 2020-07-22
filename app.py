@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from resources.user import UserRegister, UserLogin
 from resources.posts import Post, PostCheck, PostList
 from resources.likes import Likes
-from resources.analytics import Analitics
+from resources.analytics import Analytics
 from db import db
 import sqlite3
 
@@ -26,7 +26,7 @@ api.add_resource(PostList, '/posts')
 api.add_resource(UserRegister, '/signup')
 api.add_resource(UserLogin, '/login')
 api.add_resource(Likes, '/posts/<string:name>/likes')
-api.add_resource(Analitics, '/api/analitics/')
+api.add_resource(Analytics, '/api/analitics/')
 
 if __name__ == '__main__':
     db.init_app(app)
